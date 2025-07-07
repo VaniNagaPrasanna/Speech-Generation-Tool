@@ -1,0 +1,45 @@
+import pyttsx3
+
+def text_to_speech():
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+
+    # Find male and female voices
+    male_voice = None
+    female_voice = None
+
+    for voice in voices:
+        if "female" in voice.name.lower() or "zira" in voice.name.lower():
+            female_voice = voice
+        elif "male" in voice.name.lower() or "david" in voice.name.lower():
+            male_voice = voice
+
+    print("🎤 Welcome to VoiceBot!")
+    print("🎧 Choose a voice:")
+    print(" 1️⃣  Male")
+    print(" 2️⃣  Female")
+    choice = input("👉 Enter 1 or 2: ")
+
+    if choice == "1" and male_voice:
+        engine.setProperty('voice', male_voice.id)
+        print(f"✅ Male voice selected: {male_voice.name}")
+    elif choice == "2" and female_voice:
+        engine.setProperty('voice', female_voice.id)
+        print(f"✅ Female voice selected: {female_voice.name}")
+    else:
+        print("⚠️ Voice not found or invalid choice. Using default voice.")
+
+    # Set speaking rate
+    rate = engine.getProperty('rate')
+    engine.setProperty('rate', rate - 25)
+
+    print("\n✍️ Type something (type 'exit' to quit):")
+    while True:
+        text = input("📝 You: ")
+        if text.lower() == "exit":
+            print("👋 Goodbye!")
+            break
+        engine.say(text)
+        engine.runAndWait()
+
+text_to_speech()
